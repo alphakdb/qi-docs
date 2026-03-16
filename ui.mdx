@@ -1,0 +1,50 @@
+---
+title: "User Interface"
+---
+
+**uqi** is a lightweight user interface (UI) for managing kdb+ stacks. Download it from [alphakdb.com/uqi](https://alphakdb.com/uqi).
+
+## Local
+With the hub running on your local machine, create a new connection in the UI:
+
+- **Type:** q
+- **Host:** localhost
+- **Port:** 8000 (or your configured hub port)
+
+## Remote
+
+To connect the UI to a remote server, use the **cqi** Command Line Interface (CLI) to bridge the connection between the UI and the hub. From the remote server, fetch **cqi** with:
+
+**Linux:**
+```
+curl -LO https://alphakdb.com/dist/lin/cqi && chmod +x cqi
+```
+
+**Windows:**
+```
+curl -LO https://alphakdb.com/dist/win/cqi.exe
+```
+
+### Start the API bridge
+
+With **cqi** downloaded, run the following:
+
+**Linux:**
+```
+./cqi api -hub 8000 -listen 9000
+```
+
+**Windows:**
+```
+.\cqi.exe api -hub 8000 -listen 9000
+```
+
+If using a firewall or reverse proxy (e.g., Nginx on 443), point it to the `-listen` port.
+
+### Connect from the UI
+
+With the hub and cqi running on the remote machine, create a new connection in the UI:
+
+- **Type:** api
+- **Host:** your-server-ip
+- **Port:** 9000 (or your proxy port)

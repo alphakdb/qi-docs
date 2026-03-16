@@ -19,7 +19,7 @@
           },
           {
             "group": "Using qi",
-            "pages": ["package-management", "configuration", "ui-remote-connection"]
+            "pages": ["ui", "package-management", "configuration"]
           },
           {
             "group": "Reference",
