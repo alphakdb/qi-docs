@@ -38,13 +38,13 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Download qi.q",
+      "label": "qi.q",
       "href": "https://alphakdb.com/qi.q"
     }
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/alpha-training"
+      "github": "https://github.com/alphakdb"
     }
   }
 }
