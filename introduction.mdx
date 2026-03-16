@@ -49,17 +49,22 @@ The first time you try to run a feed handler on any given machine, it will likel
 q qi.q binance
 ```
 
-due to missing environment variables and/or dependencies. If it fails, qi will create a profile file at `~/.qi/qi.profile` and suggest an alias `qi`, which will allow the feed handler to run smoothly the next time around. This extra step should only be required **once per machine**. 
+due to missing environment variables and/or dependencies. If it fails, qi will create a profile file at `~/.qi/qi.profile` and suggest an alias `qi`, which will allow the feed handler to run smoothly the next time around. This extra step should only be required **once per machine**.
 
-With a feed running, the function `tcounts[]` shows the count of each table.
+With a feed running, the function `tcounts[]` shows the count of each table. 
 
-While the binance feed will start receiving data immediately, other feeds require an account (free) and an API key. The following examples will use the `qi` alias instead of `q qi.q`.
+If you run into issues with Github rate limiting, see [here](github).
+
+## Other feeds
+Some feeds require an account (free) and an API key. The following examples will use the `qi` alias instead of `q qi.q`.
 
 ```q
-qi kraken
-qi alpaca
-qi massive      / formerly polygon.io
+qi kraken       / no key required
+qi massive      / formerly polygon.io, key required
+qi alpaca       / key and secret required
 ```
+
+For information on how to configure keys, see [here](configuration#api-keys).
 
 ## Using stacks
 

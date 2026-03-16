@@ -1,0 +1,25 @@
+---
+title: "Github"
+---
+
+Github's API includes rate limits to 60 requests per hour, which you may hit if you are doing frequent upgrades. To get around this, create a free personal access token in github.com:
+
+* Profile Icon (top right)   
+* Settings   
+* Developer settings (at bottom) 
+* Personal access tokens    
+* Tokens (classic)
+
+Once you have created it, place it in `~/.qi/profile`:
+
+**Linux / Mac :**
+```
+export GITHUB_TOKEN=12345678
+```
+
+**Windows:**
+```
+$env GITHUB_TOKEN=12345678
+```
+
+and source the file.
