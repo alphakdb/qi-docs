@@ -17,7 +17,7 @@ Invoke-WebRequest -Uri https://alphakdb.com/qi.q -OutFile qi.q
 or by copying from [alphakdb.com/qi.q](https://alphakdb.com/qi.q).
 
 ## Loading qi packages
-**qi** is designed to be modular. To load one or more packages, use **.qi.import**:
+To load one or more packages, use **.qi.import**:
 
 ```q
 / Example hello.q
@@ -31,15 +31,14 @@ hello:{.log.info"Hello, world";}
 .cron.add[`hello;.z.p;00:00:01]
 .cron.start[]
 ```
-A full list of qi's packages may be found [here](/packages).
-
-## Command line
 
 You can also specify the name of a package at the command line:
 
 ```q
 q qi.q cron   
 ```
+
+A full list of packages may be found [here](/packages).
 
 ## Feed handlers
 
