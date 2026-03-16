@@ -1,0 +1,159 @@
+---
+title: "Glossary"
+---
+Below are some of the most commonly used functions and data structures in qi.
+
+## File System
+
+### `.qi.path`
+Build paths into ``` `:path/to/file```
+
+```q
+q).qi.path (`data;"HDB";2026.01.01)
+`:data/HDB/2026.01.01
+```
+
+### `.qi.spath`
+Similar to **path** but returns as ``` "path/to/file"```
+
+```q
+q).qi.spath ("data";`WDB;"2026.01.01")
+"data/WDB/2026.01.01"
+```
+
+### `.qi.ospath`
+The same as **spath** on Mac/Linux, different on Windows
+
+```q
+q).qi.ospath `tp`logs`tp1
+"tp\logs\tp1"
+```
+
+### `.qi.exists`
+Returns a boolean indicating whether a file / folder exists
+
+```q
+q).qi.exists `:somefile
+0b
+q).qi.exists (`:data;"hdb";.z.d)    / uses .qi.path
+1b
+```
+
+### `.qi.ensuredir`
+Creates a directory if it does not already exist
+
+```q
+q).qi.ensuredir "data/wdb/2026.05.01"
+```
+## Event
+
+### `.event.addhandler`
+Register a handler for an event
+
+```q
+.event.addhandler[`.z.pc;`myportclose]
+```
+
+## Cron (timer)
+The cron library uses the event library to manage jobs that are to be run on a timer.
+
+### `.cron.add`
+
+Schedule a timer job
+
+```q
+q).cron.add[`cleanup;.z.p+00:10;01:00]   / run hourly, starting in 10m
+```
+
+### `.cron.jobs`
+Table of scheduled jobs
+
+### `.cron.start`
+If the q timer (`\t`) is 0, set it to `.conf.QTIMER`.
+
+## Inter-process Communication (IPC)
+
+### `.ipc.conn`
+
+Establish / retrieve a connection to a named process
+
+```q
+q).ipc.conn[`tp1]
+8i
+q).ipc.conn[`tp1]
+8i						/ re-uses if already open
+
+```
+
+### `.ipc.ping`
+
+Sends a command asynchronously to a process, but closes the connection immediately afterwards. Useful for versions of kdb+ that have connection limits
+
+```q
+q).ipc.ping[`tp1;(`somefunc;10 20 30)]
+```
+
+
+### `.ipc.conns`
+
+Table of active connections and their metadata.
+
+## Log
+
+### `error / warn / info / debug / trace`
+
+The log library has various print functions, in the following order of log level:
+
+1. `.log.error`
+2. `.log.warn`
+3. `.log.info`
+4. `.log.debug`
+5. `.log.trace`
+
+These functions expect either plain text, or text and a dictionary:
+	
+```q
+q).log.info"testing"
+2026.03.13D15:18:34.605564000 info 0 testing
+q).log.error ("this is bad";`arg1`arg2!("yes";string .z.d))
+2026.03.13D15:19:10.920591000 error 0 yes 2026.03.13 this is bad
+```
+
+### `.log.fatal`
+Calls `.log.error` before exiting the process.
+
+### `.log.setlevel`
+Filters outputs at this level and below e.g.
+
+```q
+q).log.setlevel`info
+```
+
+Now only `error`, `warn`, and `info` messages will appear in the logs.
+
+### `.log.setformat`
+Controls the output format of logs. The options are `plain` (default), `logfmt` and `json`.
+
+```q
+q).log.setformat`plain
+q).log.info"this is a test"
+2026.03.13D15:22:03.035220000 info 0 this is a test
+q).log.setformat`logfmt
+q).log.info"this is a test"
+ts=2026.03.13D15:22:14.375892000 lvl=info h=0 msg="this is a test"
+q).log.setformat`json
+q).log.info"this is a test"
+{"ts":"2026.03.13D15:22:24.398116000","lvl":"info","h":"0","msg":"this is a test"}
+```
+
+### `.log.usefields`
+Use custom fields:
+
+```
+q).log.setformat`logfmt
+q).log.usefields`pid`user`heap!(.z.i;{.z.u};{.Q.w[]`heap})
+q).log.info"last test"
+ts=2026.03.13D15:24:04.165223000 lvl=info h=0 pid=43047 user=kieran heap=67108864 msg="last test"
+```
+
+Fields in `{}` are calculated at log time. 

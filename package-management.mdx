@@ -1,0 +1,21 @@
+---
+title: "Package Management"
+---
+
+A list of all packages may be found locally at `.qi/index.json` (taken from [here](https://github.com/alpha-training/qi/blob/main/.qi/index.json)), while a list of the currently used packages is in `.qi/index.lock.json`. The lock file ensures version consistency across a team.
+
+## Useful commands
+
+```q
+qi upgrade          / grab the latest versions, update qi.q
+qi vendor cron      / copy current version to vendor/cron
+```
+
+## Order of precedence
+When importing, say, the `log` package, qi looks will look in the following places, and stop when it finds it:
+
+1. if `vendor/log/log.q` exists, load from here
+2. else if log is listed in `.qi/index.lock.json` load from `~/.qi/cache/qi-log/[SHA]/log.q`
+3. else obtain version from `.qi/index.json`, and load from `~/.qi/cache/qi-log`
+
+**Vendoring** is the best approach for teams wishing to deviate from the qi codebase. If version consistency is the only concern, the lock file is sufficient. To have qi automatically vendor **newly fetched** packages, set `AUTO_VENDOR=1` in your configuration.

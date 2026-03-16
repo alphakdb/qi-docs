@@ -1,0 +1,40 @@
+---
+title: "Configuration"
+---
+
+Configs are stored in `*.conf` files, and loaded into the `.conf` namespace. The format is `KEY=VAL`, and the types are dynamically inferred. For example, the following config file:
+
+```
+SOMELOGS=some/path
+MYSYMS=`JPM`GE
+LOT_SIZE=100
+WEIGHT=0.35
+WRITE_EVERY=00:05
+```
+will render in q as:
+
+```
+q).conf.SOMELOGS
+"some/path"
+q)conf.MYSYMS
+`JPM`GE
+q).conf.LOT_SIZE
+100
+q).conf.WEIGHT
+0.35
+q).conf.WRITE_EVERY
+00:05
+```
+
+## Precedence
+
+Config files are loaded in the following order, from **lowest to highest precedence**:
+
+| Location | Description |
+|---|---|
+| `~/.qi/qi.conf` | Machine-wide settings |
+| `.qi/qi.conf` | Local project-level settings |
+| `[PATH-TO-PACKAGE]/defaults.conf` | Defaults for the package type |
+| `~/.qi/tp.conf` | Applies to all tickerplants on this machine |
+| `.qi/gw.conf` | Applies to all gateways in this project |
+| `q qi.q wdb1 -WRITE_EVERY 00:05` | Command-line arguments (highest priority) |

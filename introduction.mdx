@@ -1,0 +1,129 @@
+---
+title: "Introduction"
+---
+
+**qi.q** is a package manager for **q/kdb+**. It can be fetched with:
+
+**Linux / Mac / Windows 10+:**
+```bash
+curl -LO https://alphakdb.com/qi.q
+```
+
+**Windows (PowerShell fallback):**
+```powershell
+Invoke-WebRequest -Uri https://alphakdb.com/qi.q -OutFile qi.q
+```
+
+or by copying from [alphakdb.com/qi.q](https://alphakdb.com/qi.q).
+
+## Loading qi packages
+**qi** is designed to be modular. To load one or more packages, use **.qi.import**:
+
+```q
+/ Example hello.q
+
+\l qi.q
+.qi.import`log
+.qi.import`cron
+
+hello:{.log.info"Hello, world";}
+
+.cron.add[`hello;.z.p;00:00:01]
+.cron.start[]
+```
+A full list of qi's packages may be found [here](/packages).
+
+## Command line
+
+You can also specify the name of a package at the command line:
+
+```q
+q qi.q cron   
+```
+
+## Feed handlers
+
+The first time you try to run a feed handler on any given machine, it will likely complain
+
+```q
+q qi.q binance
+```
+
+due to missing environment variables and/or dependencies. If it fails, qi will create a profile file at `~/.qi/qi.profile` and suggest an alias `qi`, which will allow the feed handler to run smoothly the next time around. This extra step should only be required **once per machine**. 
+
+With a feed running, the function `tcounts[]` shows the count of each table.
+
+While the binance feed will start receiving data immediately, other feeds require an account (free) and an API key. The following examples will use the `qi` alias instead of `q qi.q`.
+
+```q
+qi kraken
+qi alpaca
+qi massive      / formerly polygon.io
+```
+
+## Using stacks
+
+q processes usually work together as a *stack*. The tickerplant (**tp**) is a router that takes data from feeds, and manages subscriptions. To start a **tp** as part of a stack, run:
+
+```q
+qi tp1
+```
+
+The `1` (or any suffix) tells qi that this is a process that lives in a stack. Because no stack has been created, qi will create an example stack **dev1**, and will place a JSON configuration file in a **stacks** folder in the current working directory.
+
+Other useful commands:
+
+```q
+qi rdb1              / start a real time database in the foreground
+qi up wdb1           / start a write database in the background
+qi up dev1           / start the whole dev1 stack in the background
+qi down kraken1      / bring the kraken feed down
+qi status dev1       / show the status of dev1's processes
+```
+
+When a feed handler is started in process mode (e.g. binance1), it publishes updates to its assigned tickerplant instead of accumulating data locally.
+
+## Hub
+
+The hub process provides a view of all other processes:
+
+```q
+qi hub
+```
+
+The hub contains a `procs` table that lists the various processes. From within the hub, you can control processes and stacks:
+
+```q
+q)up `tp1
+q)down `rdb1
+q)up `dev1      / bring up the whole stack
+q)down `dev1
+```
+Other useful hub functions:
+
+```q
+q)readstack`dev1
+q)clonestack[`dev1;`dev3]
+q)renamestack[`dev3;`dev4]
+q)deletestack`dev4
+```
+
+## User interface
+
+The **uqi** binary is a lightweight user interface for managing stacks. Download it from [alphakdb.com/uqi](https://alphakdb.com/uqi).
+
+With the hub running on your local machine, create a new connection:
+
+- **Type:** q
+- **Host:** localhost
+- **Port:** 8000 (or your configured hub port)
+
+To connect the UI to a remote server, see [UI Remote Connection](/ui-remote-connection).
+
+## License
+
+**qi.q** and its packages are free to use, and distributed under the [MIT license](https://opensource.org/license/mit). The UI is also free to use, but an update is required every 90 days.
+
+## Questions & Feedback
+
+- Email: [qi@alphakdb.com](mailto:qi@alphakdb.com)

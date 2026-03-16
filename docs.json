@@ -1,0 +1,50 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "qi",
+  "colors": {
+    "primary": "#379CEE",
+    "light": "#5FB3F7",
+    "dark": "#1A6FA8"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "Using qi",
+            "pages": ["package-management", "configuration", "ui-remote-connection"]
+          },
+          {
+            "group": "Reference",
+            "pages": ["packages", "glossary"]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "alphakdb.com",
+        "href": "https://alphakdb.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Download qi.q",
+      "href": "https://alphakdb.com/qi.q"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/alpha-training"
+    }
+  }
+}
