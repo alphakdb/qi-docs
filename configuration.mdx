@@ -26,9 +26,9 @@ q).conf.WRITE_EVERY
 00:05
 ```
 
-## Precedence
+## Overriding .conf
 
-The `.conf` namespace for a given package (e.g. tp, binance) is populated by a combination of default values in `qi.q` and the package's `defaults.conf` (if it has one). These values can be overriden with the following .conf files, from **lowest to highest precedence**:
+The `.conf` namespace for a given package (e.g. tp, binance) is populated by a combination of default values in `qi.q` and the package's `defaults.conf`, if it has one. These values can be overriden with the following .conf files, from **lowest to highest precedence**:
 
 | Location | Description |
 |---|---|
