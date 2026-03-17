@@ -28,11 +28,10 @@ q).conf.WRITE_EVERY
 
 ## Precedence
 
-Config files are loaded in the following order, from **lowest to highest precedence**:
+The `.conf` namespace for a given package (e.g. tp, binance) is populated by a combination of default values in `qi.q` and the package's `defaults.conf` (if it has one). These values can be overriden with the following .conf files, from **lowest to highest precedence**:
 
 | Location | Description |
 |---|---|
-| `[PATH-TO-PACKAGE]/defaults.conf` | Defaults for a package (not to be edited) |
 | `~/.qi/binance.conf` | Applies to all binance feeds on this machine |
 | `.qi/binance.conf` | Applies to all binance feeds in this project |
 | `stacks/dev1/stack.conf` | Applies to all processes in the dev1 stack |
