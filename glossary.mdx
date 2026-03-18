@@ -85,15 +85,6 @@ q).ipc.conn[`tp1]
 
 ```
 
-### `.ipc.ping`
-
-Sends a command asynchronously to a process, but closes the connection immediately afterwards. Useful for versions of kdb+ that have connection limits
-
-```q
-q).ipc.ping[`tp1;(`somefunc;10 20 30)]
-```
-
-
 ### `.ipc.conns`
 
 Table of active connections and their metadata.
