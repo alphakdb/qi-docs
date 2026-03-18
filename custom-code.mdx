@@ -1,0 +1,48 @@
+---
+title: "Custom code"
+---
+
+
+## 1. Custom packages
+The packages listed in `.qi/index.json` may be added to or overriden using a `.qi/custom.json` file, e.g.:
+
+```
+{
+  "description": "My custom packages",
+  "maintainer": "me,
+  "packages": {
+    "stats":    { "repo": "mygithubacc/stats", "ref": "main", "kind": "lib" },
+    "tp":    { "repo": "mygithubacc/mytp", "ref": "main", "kind": "proc" },
+    "fix":    { "repo": "mygithubacc/myfix", "ref": "main", "kind": "feed" },
+  }
+}
+
+```
+
+The `tp` library in this example will override the qi `tp` package.
+
+
+## 2. Custom q files
+When a process starts (e.g. `tp1` on a stack `dev1`), it will load the following files if they exist (**from lowest to highest precedence**):
+
+| Location | Description |
+|---|---|
+| `src/common.q` | Applies to all processes in this project |
+| `src/tp/tp.q` | Applies to all tickerplants in this project |
+| `stacks/dev1/src/common.q` | Applies to all processes in the dev1 stack |
+| `stacks/dev1/src/tp/tp.q` | Applies to all tickerplants in the dev1 stack |
+| `stacks/dev1/src/tp/tp1.q` | Applies to the tp1 process in the dev1 stack |
+
+### Useful functions
+
+#### .qi.fromsrc
+```
+/ loads src/tp/somefile.q
+q).qi.fromsrc[`tp;`somefile]
+```
+
+#### .qi.fromstacksrc
+```
+/ loads stacks/dev1/src/tp/somefile.q
+q).qi.fromstacksrc[`dev1;`tp;`somefile]	
+```

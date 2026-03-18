@@ -19,7 +19,7 @@
           },
           {
             "group": "Using qi",
-            "pages": ["package-management", "configuration", "github"]
+            "pages": ["package-management", "configuration", "github", "ui", "custom-code"]
           },
           {
             "group": "Reference",
