@@ -40,24 +40,15 @@ The `.conf` namespace for a given package (e.g. tp, binance) is populated by a c
 | `q qi.q wdb1 -WRITE_EVERY 00:05` | Command-line arguments (highest priority) |
 
 ## API keys
-API keys (e.g. for feeds) can be placed in a general file or package-specific file. For example, if you were using Alpaca & Massive, your API keys could be in one file:
+API keys (e.g. for feeds) are best kept in machine-wide package-specific files under `~/.qi/`. For example, if you were using Alpaca & Massive:
 
-`#  .qi/qi.conf`
-```
-ALPACA_KEY=a1234567
-ALPACA_SECRET=a2345678
-MASSIVE_KEY=m1234567
-```
-
-or two:
-
-`#  .qi/alpaca.conf`
+`~/.qi/alpaca.conf`
 ```
 ALPACA_KEY=a1234567
 ALPACA_SECRET=a2345678
 ```
 
-`#  .qi/massive.conf`
+`~/.qi/massive.conf`
 ```
 MASSIVE_KEY=m1234567
 ```
