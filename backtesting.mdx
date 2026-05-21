@@ -1,0 +1,122 @@
+---
+title: "Backtesting"
+---
+
+## Technical analysis library
+Backtesting in qi uses the `qi-ta` library, which is a thin q wrapper around the widely used [ta-lib](https://ta-lib.org). Functions like `bbands` and `atr` are drawn from here.
+
+## QSharpe
+For backtesting, **qi** has its own Domain Specific Language (DSL) called **qsharpe**. Below is a sample qsharpe (`.qs`) file:
+
+```
+/ strategies/mr1/logic.qs
+
+params:
+  bb_n, bb_sd, atr_n, atr_mult
+
+indicators:
+  bb  = bbands(close, bb_n, bb_sd, bb_sd, 0)
+  vol = atr(atr_n)
+  is_oversold = close < bb.lower
+  vol_filter  = vol > sma(vol, 50) 
+
+enter:
+  is_oversold
+  vol_filter
+
+exits:
+  stop_loss:
+    price: entry_price - (vol * atr_mult)
+  
+  take_profit:
+    price: bb.mid
+
+  stale_exit:
+    bars_since_entry > 30
+    upnl_r <= 0.5
+
+```
+
+## Parameters
+Paramaters are stored in `.params` files, and have the same structure as `.conf` files, e.g.
+
+```
+asset=SPY
+interval=15
+warmup=200
+bb_n=20
+bb_sd=2.0
+atr_n=14
+atr_mult=3.0
+```
+
+## Folder structure
+In any given qi project, qi expects strategies to be stored in a `strategies` folder, under which are folders named after each strategy:
+
+```
+strategies/mr1/
+ 			  |- logic.qs
+ 			  |- v1.params
+ 			  |- v2.params
+```
+
+
+## Running a strategy
+To run a strategy do:
+
+`q qi.q -strat mr1 -params v1`
+
+The `-params` argument is not required if there is only one `.params` file.
+
+## Shared logic
+The folder `strategies/common` is reserved for functionality that can be used by all strategies.
+
+Under common, there can be two folders:
+
+* `lib`	- for `.qs` files with common logic
+* `params` - common parameters
+
+
+## Example using shared logic
+
+If we imagine that we have created the following shared folder:
+
+```
+strategies/common/params/
+ 			  			|- defaults.params
+ 			  			|- passive.params
+ 			  			|- aggressive.params
+```
+
+We can then create the following:
+
+```
+strategies/mr2/
+ 			  |- logic.qs
+```
+
+and run
+
+`q qi.q -strat mr2`
+
+which will use `defaults.params` from `common`, or we can do:
+
+`q qi.q -strat mr2 -params passive`
+
+**Note:** in this second case, `defaults` will still be used, but will be overriden by passive.
+
+If we now create a local params file so that we have:
+
+```
+strategies/mr2/
+ 			  |- logic.qs
+ 			  |- custom.qs
+```
+and we now do
+
+`q qi.q -strat mr2`
+
+The order of params files being loaded is:
+
+1. `common/params/defaults.params`
+2. `mr2/custom.qs`
